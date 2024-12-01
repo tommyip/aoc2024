@@ -1,10 +1,9 @@
 from collections import Counter
-from itertools import batched
 
-lines = open("inputs/day01.txt").read().strip()
+nums = [*map(int, open("inputs/day01.txt").read().strip().split())]
+l, r = sorted(nums[0::2]), sorted(nums[1::2])
 
-l, r = zip(*batched(map(int, lines.split()), 2))
-print(sum(abs(a - b) for a, b in zip(sorted(l), sorted(r))))
+print(sum(abs(a - b) for a, b in zip(l, r)))
 
 count = Counter(r)
 print(sum(a * count.get(a, 0) for a in l))
