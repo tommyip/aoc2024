@@ -1,6 +1,6 @@
 # Advent of Code 2024 🎄
 
-Solutions in Python and Uiua.
+Solutions in Python and Uiua (0.14.0-dev.6).
 
 ### Previous Years
 
