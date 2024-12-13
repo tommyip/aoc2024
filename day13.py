@@ -1,13 +1,12 @@
 import re
 
 inputs = open("inputs/day13.txt").read().split("\n\n")
-pos_int = lambda x: x >= 0 and abs(x - int(x)) < 1e-9
 
 
 def tokens(ax, ay, bx, by, px, py, trans=0):
     b = ((trans + py) * ax - (trans + px) * ay) / (by * ax - bx * ay)
     a = ((trans + px) - b * bx) / ax
-    return int(a) * 3 + int(b) if pos_int(a) and pos_int(b) else 0
+    return int(a * 3 + b) if a.is_integer() and b.is_integer() else 0
 
 
 part1 = 0
