@@ -1,3 +1,6 @@
+from heapq import heappop, heappush
+from typing import NamedTuple
+
 from aoc_utils import *
 
 inputs = open("inputs/day16.txt").read().strip()
@@ -5,24 +8,23 @@ grid = complex_grid(inputs.replace("E", ".").split("\n"))
 start = grid_find(inputs, "S")
 end = grid_find(inputs, "E")
 
+
+class CostNode(NamedTuple):
+    cost: int
+    node: tuple[complex, complex]
+
+    def __lt__(self, other):
+        return self.cost < other.cost
+
+
 dist = {(start, 1): (0, [])}
+visited = set()
+q = [CostNode(0, (start, 1))]
 
-unvisited = set()
-for pos, c in grid.items():
-    if c in "S.":
-        for dir in adj4:
-            unvisited.add((pos, dir))
-
-while unvisited:
-    pos, cost = None, None
-    for pos_ in unvisited:
-        if cost_and_parent := dist.get(pos_):
-            cost_, _ = cost_and_parent
-            if cost is None or cost_ < cost:
-                pos = pos_
-                cost = cost_
-    if pos is None or cost is None:
-        break
+while q:
+    cost, pos = heappop(q)
+    if pos in visited:
+        continue
     loc, dir = pos
 
     for nei_dir in adj4:
@@ -30,17 +32,20 @@ while unvisited:
             continue
         nei = loc + nei_dir
         nei_pos = nei, nei_dir
-        if grid.get(nei) == "." and nei_pos in unvisited:
+        if grid.get(nei) == "." and nei_pos not in visited:
             nei_cost = cost + 1 + 1000 * (dir != nei_dir)
             if nei_pos in dist:
                 nei_cost_, parents = dist[nei_pos]
                 if nei_cost < nei_cost_:
                     dist[nei_pos] = nei_cost, [pos]
+                    heappush(q, CostNode(nei_cost, nei_pos))
                 elif nei_cost == nei_cost_:
                     parents.append(pos)
+                    heappush(q, CostNode(nei_cost, nei_pos))
             else:
                 dist[nei_pos] = nei_cost, [pos]
-    unvisited.remove(pos)
+                heappush(q, CostNode(nei_cost, nei_pos))
+    visited.add(pos)
 
 min_pos, min_cost = None, None
 for (pos, dir), (cost, parents) in dist.items():
