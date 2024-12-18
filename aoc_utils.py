@@ -1,6 +1,7 @@
 from collections.abc import Iterable
-from typing import Generic, NamedTuple, TypeVar
+from typing import Generic, TypeVar
 
+inf = float("inf")
 adj4 = (-1j, 1, 1j, -1)
 adj8 = (-1j, 1 - 1j, 1, 1 + 1j, 1j, 1j - 1, -1, 1j - 1)
 dir_map = {"^": -1j, "v": 1j, ">": 1, "<": -1}
@@ -46,3 +47,7 @@ def grid_find(grid: str, target: str) -> complex:
 
 def find_key_by_value(d: dict[K, V], v: V) -> K:
     return list(d.keys())[list(d.values()).index(v)]
+
+
+def ij(x: complex) -> tuple[int, int]:
+    return int(x.real), int(x.imag)
