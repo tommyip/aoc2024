@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import TypeVar
+from typing import Generic, NamedTuple, TypeVar
 
 adj4 = (-1j, 1, 1j, -1)
 adj8 = (-1j, 1 - 1j, 1, 1 + 1j, 1j, 1j - 1, -1, 1j - 1)
@@ -9,6 +9,20 @@ dir_map = {"^": -1j, "v": 1j, ">": 1, "<": -1}
 T = TypeVar("T")
 K = TypeVar("K")
 V = TypeVar("V")
+
+
+class CostNode(tuple, Generic[K, T]):
+    cost: K
+    pos: T
+
+    def __new__(cls, cost: K, pos: T):
+        self = tuple.__new__(cls, (cost, pos))
+        self.cost = cost
+        self.pos = pos
+        return self
+
+    def __lt__(self, other):
+        return self.cost < other.cost
 
 
 def complex_grid(
