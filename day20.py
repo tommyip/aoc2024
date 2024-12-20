@@ -2,8 +2,8 @@ from itertools import count
 
 from aoc_utils import *
 
-inputs = open("inputs/day20.txt").read()
-grid = set(complex_grid(inputs.splitlines(), filter="SE."))
+inputs = open("inputs/day20.txt").read().splitlines()
+grid = set(complex_grid(inputs, filter="SE."))
 start = grid_find(inputs, "S")
 end = grid_find(inputs, "E")
 

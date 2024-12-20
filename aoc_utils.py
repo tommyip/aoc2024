@@ -37,8 +37,10 @@ def complex_grid(
     }
 
 
-def grid_find(grid: str, target: str) -> complex:
-    for j, line in enumerate(grid.split("\n")):
+def grid_find(grid: str | list[str], target: str) -> complex:
+    if isinstance(grid, str):
+        grid = grid.split("\n")
+    for j, line in enumerate(grid):
         for i, c in enumerate(line):
             if c == target:
                 return complex(i, j)

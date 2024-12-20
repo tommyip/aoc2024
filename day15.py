@@ -5,8 +5,9 @@ moves = moves.replace("\n", "")
 
 
 def part1(grid, moves):
+    grid = grid.split("\n")
     pos = grid_find(grid, "@")
-    grid = complex_grid(grid.split("\n"), filter="#O")
+    grid = complex_grid(grid, filter="#O")
 
     for move in moves:
         dir = dir_map[move]
@@ -29,9 +30,11 @@ def part1(grid, moves):
 
 
 def part2(grid, moves):
-    grid = grid.translate(str.maketrans({"#": "##", "O": "[]", ".": "..", "@": "@."}))
+    grid = grid.translate(
+        str.maketrans({"#": "##", "O": "[]", ".": "..", "@": "@."})
+    ).split("\n")
     pos = grid_find(grid, "@")
-    grid = complex_grid(grid.split("\n"), filter="#[]")
+    grid = complex_grid(grid, filter="#[]")
 
     for move in moves:
         dir = dir_map[move]
