@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Generic, TypeVar
+from typing import Callable, Generic, TypeVar
 
 inf = float("inf")
 adj4 = (-1j, 1, 1j, -1)
@@ -27,13 +27,15 @@ class CostNode(tuple, Generic[K, T]):
 
 
 def complex_grid(
-    input: Iterable[Iterable[T]], filter: Iterable[T] | None = None
+    input: Iterable[Iterable[T]],
+    filter: Iterable[T] | None = None,
+    inv: bool = False,
 ) -> dict[complex, T]:
     return {
         i + j * 1j: c
         for j, line in enumerate(input)
         for i, c in enumerate(line)
-        if not filter or c in filter
+        if not filter or (not inv and c in filter) or c not in filter
     }
 
 
