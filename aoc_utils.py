@@ -1,5 +1,6 @@
 from collections.abc import Iterable
-from typing import Callable, Generic, TypeVar
+from itertools import islice
+from typing import Generic, TypeVar
 
 inf = float("inf")
 adj4 = (-1j, 1, 1j, -1)
@@ -55,3 +56,13 @@ def find_key_by_value(d: dict[K, V], v: V) -> K:
 
 def ij(x: complex) -> tuple[int, int]:
     return int(x.real), int(x.imag)
+
+
+def window(seq, n=2):
+    it = iter(seq)
+    result = tuple(islice(it, n))
+    if len(result) == n:
+        yield result
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield result
