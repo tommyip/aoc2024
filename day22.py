@@ -1,10 +1,9 @@
+from collections import Counter
 from itertools import pairwise
-
-from tqdm import tqdm
 
 from aoc_utils import window
 
-inputs = map(int, open("inputs/day22.txt").read().splitlines())
+secrets = map(int, open("inputs/day22.txt").read().splitlines())
 
 
 def evolve(x):
@@ -17,23 +16,18 @@ def evolve(x):
     return seq
 
 
-secrets = [evolve(x) for x in inputs]
+part1 = 0
+part2 = Counter()
+for secret in secrets:
+    seq = evolve(secret)
+    part1 += seq[-1]
+    digits = [x % 10 for x in seq]
+    diffs = (b - a for a, b in pairwise(digits))
+    seen = set()
+    for changes, price in zip(window(diffs, 4), digits[4:]):
+        if changes not in seen:
+            seen.add(changes)
+            part2[changes] += price
 
-print(sum(s[-1] for s in secrets))
-
-digits = [[x % 10 for x in seq] for seq in secrets]
-diffs = [[b - a for a, b in pairwise(seq)] for seq in digits]
-num_maps = []
-changes = set()
-for seq, diff in zip(digits, diffs):
-    map = {}
-    for change, price in zip(window(diff, 4), seq[4:]):
-        if change not in map:
-            changes.add(change)
-            map[change] = price
-    num_maps.append(map)
-
-
-print(
-    max(sum(num_map.get(change, 0) for num_map in num_maps) for change in tqdm(changes))
-)
+print(part1)
+print(part2.most_common(1)[0][1])
