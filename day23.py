@@ -14,8 +14,8 @@ def parties(size):
         for friends in combinations(network[node], r=size - 1):
             party = set(friends + (node,))
             if all(party - {friend} <= network[friend] for friend in party):
-                yield tuple(sorted(party))
+                yield ",".join(sorted(party))
 
 
-print(sum(any(x[0] == "t" for x in p) for p in set(parties(3))))
-print(",".join(next(parties(len(network[a])))))
+print(sum("t" in p[::3] for p in set(parties(3))))
+print(next(parties(len(network[a]))))
