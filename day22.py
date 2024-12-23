@@ -20,7 +20,7 @@ for secret in secrets:
     diffs = [b - a + 9 for a, b in pairwise(digits)]
     seen = set()
     for i in range(len(digits) - 4):
-        key = diffs[i] * 18**3 + diffs[i + 1] * 18**2 + diffs[i + 2] * 18 + diffs[i + 3]
+        key = diffs[i] * 19**3 + diffs[i + 1] * 19**2 + diffs[i + 2] * 19 + diffs[i + 3]
         if key not in seen:
             seen.add(key)
             part2[key] += digits[4 + i]
