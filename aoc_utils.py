@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 from itertools import islice
-from typing import Generic, TypeVar
+from typing import Callable, Generic, TypeVar
 
 inf = float("inf")
 adj4 = (-1j, 1, 1j, -1)
@@ -50,8 +50,16 @@ def grid_find(grid: str | list[str], target: str) -> complex:
     return complex(float("inf"), float("inf"))
 
 
-def find_key_by_value(d: dict[K, V], v: V) -> K:
-    return list(d.keys())[list(d.values()).index(v)]
+def find_key_by_value(d: dict[K, V], v: V) -> K | None:
+    for k, v_ in d.items():
+        if v_ == v:
+            return k
+
+
+def find_key_by_predicate(d: dict[K, V], pred: Callable[[V], bool]) -> K | None:
+    for k, v in d.items():
+        if pred(v):
+            return k
 
 
 def ij(x: complex) -> tuple[int, int]:
